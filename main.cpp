@@ -17,39 +17,62 @@ static std::ofstream logFile;
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QByteArray localMsg = msg.toLocal8Bit();
-    char str[256] = {0};
     FILE* stream;
+    QString formatString("[%0] [%1] \033[1m\033[95m%2\033[0m (%3:%4)\n\n");
 
     switch (type) {
     case QtDebugMsg:
-        sprintf(str, "[DEBUG] [%s] \033[1m\033[95m%s\033[0m (%s:%u)\n\n", context.function, localMsg.constData(), context.file, context.line);
+        formatString = formatString.arg("DEBUG")
+                .arg(QString(context.function))
+                .arg(msg)
+                .arg(QString(context.file))
+                .arg(QString::number(context.line));
         stream = stdout;
         break;
+
     case QtInfoMsg:
-        sprintf(str, "[INFO] [%s] \033[1m\033[95m%s\033[0m (%s:%u)\n\n", context.function, localMsg.constData(), context.file, context.line);
+        formatString = formatString.arg("\033[94mINFO\033[0m")
+                .arg(QString(context.function))
+                .arg(msg)
+                .arg(QString(context.file))
+                .arg(QString::number(context.line));
         stream = stdout;
         break;
+
     case QtWarningMsg:
-        sprintf(str, "[WARNING] [%s] \033[1m\033[95m%s\033[0m (%s:%u)\n\n", context.function, localMsg.constData(), context.file, context.line);
+        formatString = formatString.arg("\033[93mWARNING\033[0m")
+                .arg(QString(context.function))
+                .arg(msg)
+                .arg(QString(context.file))
+                .arg(QString::number(context.line));
         stream = stdout;
         break;
+
     case QtCriticalMsg:
-        sprintf(str, "[CRITICAL] [%s] \033[1m\033[95m%s\033[0m (%s:%u)\n\n", context.function, localMsg.constData(), context.file, context.line);
+        formatString = formatString.arg("\033[91mCRITICAL\033[0m")
+                .arg(QString(context.function))
+                .arg(msg)
+                .arg(QString(context.file))
+                .arg(QString::number(context.line));
         stream = stderr;
         break;
+
     case QtFatalMsg:
-        sprintf(str, "[FATAL] [%s] \033[1m\033[95m%s\033[0m (%s:%u)\n\n", context.function, localMsg.constData(), context.file, context.line);
-        stream = stderr;
+        formatString = formatString.arg("\033[91mFATAL\033[0m")
+                .arg(QString(context.function))
+                .arg(msg)
+                .arg(QString(context.file))
+                .arg(QString::number(context.line));
+        stream = stderr;    
         break;
     }
 
-    if(logFile.is_open()){
-        logFile << str;
+    if(logFile.is_open() && type != QtDebugMsg){
+        logFile << formatString.toStdString();
         logFile.flush();
     }
 
-    fprintf(stream, "%s", str);
+    fprintf(stream, "%s", formatString.toStdString().c_str());
     fflush(stream);
 }
 
