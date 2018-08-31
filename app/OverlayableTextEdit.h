@@ -3,6 +3,7 @@
 
 #include <QTextEdit>
 #include <QObject>
+#include <QWidget>
 
 class OverlayableTextEdit : public QTextEdit
 {
@@ -12,7 +13,7 @@ public:
     ~OverlayableTextEdit();
 
 private:
-    QString codeRepresentation;
+    QString code;
 
     QString build();
 
@@ -20,6 +21,7 @@ public:
 
 public slots:
     void render();
+    void updateInternalRepresentation();
 };
 
 #endif // AOVERLAYABLETEXTEDIT_H
