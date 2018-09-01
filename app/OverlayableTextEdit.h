@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QWidget>
 
+#include "IExpression.h"
+
 class OverlayableTextEdit : public QTextEdit
 {
     Q_OBJECT
@@ -13,15 +15,15 @@ public:
     ~OverlayableTextEdit();
 
 private:
-    QString code;
-
+    std::vector<IExpression*> expressions;
     QString build();
+
+    void keyPressEvent(QKeyEvent *event);
 
 public:
 
 public slots:
     void render();
-    void updateInternalRepresentation();
 };
 
 #endif // AOVERLAYABLETEXTEDIT_H
