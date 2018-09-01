@@ -25,11 +25,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         app/mainwindow.cpp \
-        app/OverlayableTextEdit.cpp
+        app/OverlayableTextEdit.cpp \
+    expressions/HeaderExpresion.cpp
 
 HEADERS += \
         app/mainwindow.h \
-        app/OverlayableTextEdit.h
+        app/OverlayableTextEdit.h \
+    app/IExpression.h \
+    expressions/HeaderExpresion.h \
+    expressions/ExpressionStructs.h
 
 FORMS += \
         mainwindow.ui
