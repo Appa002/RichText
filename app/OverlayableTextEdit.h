@@ -16,11 +16,15 @@ public:
 
 private:
     std::vector<IExpression*> expressions;
-    QString build();
+    QString userEnteredText;
 
+    QString build();
     void keyPressEvent(QKeyEvent *event);
 
 public:
+
+private slots:
+    void updateUserEnteredText();
 
 public slots:
     void render();

@@ -14,6 +14,11 @@ OverlayableTextEdit::OverlayableTextEdit(QWidget *parent) : QTextEdit (parent)
     expr->pos(10);
 
     this->expressions.push_back(expr);
+
+    this->userEnteredText = "Lorem ipsum dolore sed amid. This\n"
+                            "is my program. Test and stuff. The muon is a lepton wich is known to be havier then";
+
+    connect(this, &QTextEdit::textChanged, this, &OverlayableTextEdit::updateUserEnteredText);
 }
 
 OverlayableTextEdit::~OverlayableTextEdit()
@@ -26,15 +31,14 @@ OverlayableTextEdit::~OverlayableTextEdit()
 QString OverlayableTextEdit::build()
 {
     qInfo() << "Bulding text representation...";
-    QString out = this->toPlainText();
-    int from = -1;
+    QString out = this->userEnteredText;
 
     for(auto& expr : this->expressions){
         qInfo() << "Inserting expression: " << expr->info();
         out.insert(expr->pos(), expr->html());
     }
 
-    from = 0;
+    int from = 0;
     while(((void)(from = out.indexOf('\n', from)), from ) != -1){
         out.replace(from, 1, "<br/>");
     }
@@ -48,7 +52,6 @@ void OverlayableTextEdit::render()
     QString newHtml = build();
     this->clear();
     this->setHtml(newHtml);
-    qDebug() << this->toHtml();
 }
 
 void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
@@ -63,14 +66,20 @@ void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
         size_t idx = static_cast<size_t>(i);
         IExpression* expr = this->expressions.at(idx);
 
-        int lowerBound = expr->pos();
+        int lowerBound = expr->pos() + 1;
         int upperBound = expr->pos() + expr->size();
-
 
         if(lowerBound <= pos && pos <= upperBound){
             this->expressions.erase(this->expressions.begin() + i);
-            qDebug("did the thing");
         }
+    }
+}
+
+void OverlayableTextEdit::updateUserEnteredText()
+{
+    QString text = this->toPlainText();
+    for(auto& expr : this->expressions){
+        text.replace(expr->pos(), expr->size(), "");
     }
 }
 
