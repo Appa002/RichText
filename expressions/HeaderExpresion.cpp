@@ -21,7 +21,7 @@ QString HeaderExpresion::info()
 
 int HeaderExpresion::size()
 {
-    return this->html().size();
+    return this->contentStruct_->content.size();
 }
 
 int HeaderExpresion::pos()
