@@ -3,6 +3,7 @@
 #include <fstream>
 
 static std::ofstream logFile;
+static long long counter = 0;
 
 /*
     HEADER = '\033[95m'
@@ -22,12 +23,13 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
     switch (type) {
     case QtDebugMsg:
-        formatString = formatString.arg("DEBUG")
+        formatString = formatString.arg("DEBUG " + QString::number(counter))
                 .arg(QString(context.function))
                 .arg(msg)
                 .arg(QString(context.file))
                 .arg(QString::number(context.line));
         stream = stdout;
+        counter++;
         break;
 
     case QtInfoMsg:
