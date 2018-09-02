@@ -17,6 +17,7 @@ public:
 private:
     std::vector<IExpression*> expressions;
     QString userEnteredText;
+    bool isDirty;
 
     QString build();
     void keyPressEvent(QKeyEvent *event);
@@ -25,7 +26,6 @@ public:
 
 private slots:
     void updateUserEnteredText();
-
 public slots:
     void render();
 };

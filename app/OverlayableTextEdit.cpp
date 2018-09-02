@@ -6,19 +6,20 @@
 
 OverlayableTextEdit::OverlayableTextEdit(QWidget *parent) : QTextEdit (parent)
 {
+    isDirty = true;
+    connect(this, &QTextEdit::textChanged, this, &OverlayableTextEdit::updateUserEnteredText);
+
     HeaderExpresion* expr = new HeaderExpresion();
     HeaderExprStruct exprStruct;
     exprStruct.content = "OI!";
     exprStruct.size = 1;
     expr->contentStruct(&exprStruct);
-    expr->pos(10);
+    expr->pos(0);
+
+    this->userEnteredText = "Lorem ipsum dolore sid amit. This is text. Did you know that the british spitfire had a huge"
+            "engine problem, which made it impossible to do -g manouver, because it would starve the engine.";
 
     this->expressions.push_back(expr);
-
-    this->userEnteredText = "Lorem ipsum dolore sed amid. This\n"
-                            "is my program. Test and stuff. The muon is a lepton wich is known to be havier then";
-
-    connect(this, &QTextEdit::textChanged, this, &OverlayableTextEdit::updateUserEnteredText);
 }
 
 OverlayableTextEdit::~OverlayableTextEdit()
@@ -49,16 +50,27 @@ QString OverlayableTextEdit::build()
 
 void OverlayableTextEdit::render()
 {
+    qInfo() << "Rendering text. Is dirty?: " << this->isDirty;
     QString newHtml = build();
     this->clear();
     this->setHtml(newHtml);
+    this->isDirty = false;
 }
 
 void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
 {
     QTextEdit::keyPressEvent(event);
 
-   if(event->key() != 16777219)
+/*    if(event->text().size() == 1 && event->key() != 16777219){
+        int pos = this->textCursor().position();
+        for(auto& expr : expressions){
+            if(expr->pos() < pos)
+                pos -= expr->size();
+        }
+        this->userEnteredText.insert(pos - 1, event->text());
+    }*/
+
+    if(event->key() != 16777219 || this->isDirty)
        return;
 
     int pos = this->textCursor().position();
@@ -77,13 +89,14 @@ void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
 
 void OverlayableTextEdit::updateUserEnteredText()
 {
-    QString text = this->toPlainText();
+    if(this->isDirty)
+        return;
+
+    this->userEnteredText = this->toPlainText();
     for(auto& expr : this->expressions){
-        text.replace(expr->pos(), expr->size(), "");
+        this->userEnteredText.replace(expr->pos(), expr->size(), "");
     }
 }
-
-
 
 
 
