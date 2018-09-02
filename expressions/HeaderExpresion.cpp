@@ -1,6 +1,8 @@
 #include "HeaderExpresion.h"
 #include "app/IExpression.h"
 
+#include <QDebug>
+
 HeaderExpresion::HeaderExpresion()
 {
     this->contentStruct_ = new HeaderExprStruct;
@@ -37,11 +39,37 @@ int HeaderExpresion::pos(int val)
 
 QString HeaderExpresion::html()
 {
+    QString size;
+    switch (contentStruct_->size) {
+     case(1):
+        size="xx-large";
+        break;
 
-    return QString("<h%0> %1 </h%2>")
-            .arg(QString::number(contentStruct_->size))
-            .arg(contentStruct_->content)
-            .arg(QString::number(contentStruct_->size));
+    case(2):
+        size="x-large";
+        break;
+
+    case(3):
+        size="large";
+        break;
+
+    case(4):
+        size="medium";
+        break;
+
+    case(5):
+        size="small";
+        break;
+
+    default:
+        qWarning() << "HeaderExpression with size out of range: range: 1-5, size: " << contentStruct_->size;
+        size="xx-large";
+        break;
+    }
+
+    return QString("<span style='font-size:%0; font-weight:600;'>%1</span>")
+            .arg(size)
+            .arg(contentStruct_->content);
 }
 
 void *HeaderExpresion::contentStruct()
