@@ -92,15 +92,25 @@ void OverlayableTextEdit::updateUserEnteredText()
     if(this->isDirty)
         return;
 
+    int size = this->toPlainText().size();
+    for(auto& expr : this->expressions){
+        size -= expr->size();
+    }
+
+    int pos = this->textCursor().position();
+    for(auto& expr : this->expressions){
+        if(pos - 1 <= expr->pos()){
+            if(this->oldSize < size)
+                expr->pos(expr->pos() + 1);
+            else
+                expr->pos(expr->pos() - 1);
+        }
+    }
+
     this->userEnteredText = this->toPlainText();
     for(auto& expr : this->expressions){
         this->userEnteredText.replace(expr->pos(), expr->size(), "");
     }
+
+    this->oldSize = size;
 }
-
-
-
-
-
-
-

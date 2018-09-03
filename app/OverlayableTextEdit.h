@@ -17,6 +17,7 @@ public:
 private:
     std::vector<IExpression*> expressions;
     QString userEnteredText;
+    int oldSize = -1;
     bool isDirty;
 
     QString build();
