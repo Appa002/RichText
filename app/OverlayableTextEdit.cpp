@@ -51,10 +51,17 @@ QString OverlayableTextEdit::build()
 void OverlayableTextEdit::render()
 {
     qInfo() << "Rendering text. Is dirty?: " << this->isDirty;
+    int pos = this->textCursor().position();
+
     QString newHtml = build();
     this->clear();
     this->setHtml(newHtml);
     this->isDirty = false;
+
+    QTextCursor cursor = this->textCursor();
+    cursor.setPosition(pos, QTextCursor::MoveMode::MoveAnchor);
+    this->setTextCursor(cursor);
+
 }
 
 void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
@@ -86,6 +93,7 @@ void OverlayableTextEdit::keyPressEvent(QKeyEvent* event)
         }
     }
 }
+
 
 void OverlayableTextEdit::updateUserEnteredText()
 {
