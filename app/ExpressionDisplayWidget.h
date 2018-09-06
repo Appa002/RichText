@@ -30,13 +30,13 @@ public:
     IExpressionFactory* factory(IExpressionFactory* val);
     bool underlined();
     bool underlined(bool val);
+    void creationEvent();
 
 signals:
 
 private slots:
 
 public slots:
-    void creationEvent();
 
 };
 

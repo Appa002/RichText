@@ -25,10 +25,16 @@ void CommandPallet::setup(ExpressionInputWidget *textEnter, QVBoxLayout *sugesti
     this->sugestionList = sugestionList;
 
     connect(this->textEnter, &QPlainTextEdit::textChanged, this, &CommandPallet::textChanged);
+    connect(this->textEnter, &ExpressionInputWidget::submited, this, &CommandPallet::handleSubmit);
 }
 
 void CommandPallet::textChanged()
 {
+
+    if(this->textEnter->toPlainText().size() != 0
+            && this->textEnter->toPlainText().at(this->textEnter->toPlainText().size() - 1) == '\n')
+        return;
+
     if(this->textEnter->toPlainText().size() != 0
             && this->textEnter->toPlainText().at(this->textEnter->toPlainText().size() - 1) == '\t'){
         if(this->displayedExpression.size() == 0)
@@ -91,3 +97,14 @@ void CommandPallet::textChanged()
     this->resize(width(), 82 + size);
 
 }
+
+void CommandPallet::handleSubmit()
+{
+    if(this->displayedExpression.size() > 0){
+        this->displayedExpression.at(this->markedIndex)->creationEvent();
+    }
+}
+
+
+
+

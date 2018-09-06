@@ -22,8 +22,8 @@ private:
     std::vector<QString> listOfExpressions;
     std::vector<ExpressionDisplayWidget*> displayedExpression;
     size_t markedIndex = 0;
-
     bool dirty = false;
+
     bool partialyContains(QString a, QString b);
 public:
     void setup(ExpressionInputWidget* textEnter, QVBoxLayout* sugestionList);
@@ -31,6 +31,8 @@ signals:
 
 private slots:
     void textChanged();
+    void handleSubmit();
+
 public slots:
 };
 
