@@ -26,14 +26,21 @@ SOURCES += \
         main.cpp \
         app/mainwindow.cpp \
         app/OverlayableTextEdit.cpp \
-    expressions/HeaderExpresion.cpp
+    expressions/HeaderExpresion.cpp \
+    app/ExpressionDisplayWidget.cpp \
+    app/ExpressionInputWidget.cpp \
+    app/CommandPallet.cpp
 
 HEADERS += \
         app/mainwindow.h \
         app/OverlayableTextEdit.h \
     app/IExpression.h \
     expressions/HeaderExpresion.h \
-    expressions/ExpressionStructs.h
+    expressions/ExpressionStructs.h \
+    app/ExpressionDisplayWidget.h \
+    app/IExpressionFactory.h \
+    app/ExpressionInputWidget.h \
+    app/CommandPallet.h
 
 FORMS += \
         mainwindow.ui
