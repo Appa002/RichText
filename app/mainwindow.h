@@ -20,6 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QAction* richAction;
+    bool adderOpen = false;
 
     void resizeEvent(QResizeEvent* event) override;
 
