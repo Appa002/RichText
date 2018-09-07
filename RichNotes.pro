@@ -20,7 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
+CONFIG += c++17
 
 SOURCES += \
         main.cpp \
@@ -29,7 +29,8 @@ SOURCES += \
     expressions/HeaderExpresion.cpp \
     app/ExpressionDisplayWidget.cpp \
     app/ExpressionInputWidget.cpp \
-    app/CommandPallet.cpp
+    app/CommandPallet.cpp \
+    expressionFactory/GenericFactory.cpp
 
 HEADERS += \
         app/mainwindow.h \
@@ -40,7 +41,9 @@ HEADERS += \
     app/ExpressionDisplayWidget.h \
     app/IExpressionFactory.h \
     app/ExpressionInputWidget.h \
-    app/CommandPallet.h
+    app/CommandPallet.h \
+    expressionFactory/GenericFactory.h \
+    expressionFactory/NullFactory.h
 
 FORMS += \
         mainwindow.ui
