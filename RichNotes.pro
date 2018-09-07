@@ -30,7 +30,8 @@ SOURCES += \
     app/ExpressionDisplayWidget.cpp \
     app/ExpressionInputWidget.cpp \
     app/CommandPallet.cpp \
-    expressionFactory/GenericFactory.cpp
+    expressionFactory/GenericFactory.cpp \
+    expressionFactory/GenericFactoryWidget.cpp
 
 HEADERS += \
         app/mainwindow.h \
@@ -43,12 +44,11 @@ HEADERS += \
     app/ExpressionInputWidget.h \
     app/CommandPallet.h \
     expressionFactory/GenericFactory.h \
-    expressionFactory/NullFactory.h
+    expressionFactory/NullFactory.h \
+    expressionFactory/GenericFactoryWidget.h
 
 FORMS += \
         mainwindow.ui
-
-RESOURCES = resources.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
