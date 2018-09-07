@@ -23,7 +23,7 @@ void ExpressionDisplayWidget::mousePressEvent(QMouseEvent *event)
 void ExpressionDisplayWidget::creationEvent()
 {
     qDebug() << "OI! : " << this->name_;
-  //  factory_->createWidgets();
+    factory_->createWidgets();
 }
 
 QLabel *ExpressionDisplayWidget::toLabel()

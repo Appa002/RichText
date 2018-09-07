@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(richAction, &QAction::triggered, this, &MainWindow::createGraph);
     this->addAction(richAction);
 
-    ui->frame->setup(ui->expressionAdderEdit, ui->sugestionsList);
+    ui->frame->setup(ui->expressionAdderEdit, ui->sugestionsList, this->ui->centralWidget);
 
 }
 
@@ -51,6 +51,17 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     double frameWidth = event->size().width() * frameRelativeWidth;
     double frameYPos = (event->size().width() - frameWidth) / 2;
 
+    QFrame* factoryFrame = ui->centralWidget->findChild<QFrame*>("expressionFactoryFrame");
+    if(factoryFrame){
+        factoryFrame->resize(static_cast<int>(frameWidth), factoryFrame->size().height());
+        factoryFrame->move(static_cast<int>(frameYPos), 0);
+    }
+
     this->ui->frame->resize(static_cast<int>(frameWidth), this->ui->frame->size().height());
     this->ui->frame->move(static_cast<int>(frameYPos), 0);
 }
+
+
+
+
+

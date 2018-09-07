@@ -2,10 +2,22 @@
 
 #include <QLayout>
 #include <QDebug>
+#include <app/IExpressionFactory.h>
+#include <expressionFactory/GenericFactory.h>
 
 CommandPallet::CommandPallet(QWidget *parent) : QFrame(parent)
 {
     this->listOfExpressions = {"Header", "Graph", "Image", "Horizontal Ruler"};
+    this->name2Factory["Header"] = new GenericFactory();
+    this->name2Factory["Graph"] = new GenericFactory();
+    this->name2Factory["Image"] = new GenericFactory();
+    this->name2Factory["Horizontal Ruler"] = new GenericFactory();
+}
+CommandPallet::~CommandPallet()
+{
+    for(auto& it : this->name2Factory){
+        delete it.second;
+    }
 }
 
 bool CommandPallet::partialyContains(QString a, QString b)
@@ -19,10 +31,15 @@ bool CommandPallet::partialyContains(QString a, QString b)
     return false;
 }
 
-void CommandPallet::setup(ExpressionInputWidget *textEnter, QVBoxLayout *sugestionList)
+void CommandPallet::setup(ExpressionInputWidget *textEnter, QVBoxLayout *sugestionList, QWidget *centralWidget)
 {
     this->textEnter = textEnter;
     this->sugestionList = sugestionList;
+    this->centralWidget = centralWidget;
+
+    for(auto& it : this->name2Factory){
+        it.second->setup(this->centralWidget);
+    }
 
     connect(this->textEnter, &QPlainTextEdit::textChanged, this, &CommandPallet::textChanged);
     connect(this->textEnter, &ExpressionInputWidget::submited, this, &CommandPallet::handleSubmit);
@@ -85,6 +102,7 @@ void CommandPallet::textChanged()
     for(auto& it : matchingExpressions){
         ExpressionDisplayWidget* label = new ExpressionDisplayWidget;
         label->name(it);
+        label->factory(name2Factory.at(it.toStdString()));
 
         this->displayedExpression.push_back(label);
         this->sugestionList->layout()->addWidget(label);
@@ -102,6 +120,7 @@ void CommandPallet::handleSubmit()
 {
     if(this->displayedExpression.size() > 0){
         this->displayedExpression.at(this->markedIndex)->creationEvent();
+        this->hide();
     }
 }
 

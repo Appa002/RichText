@@ -1,21 +1,16 @@
 #ifndef IEXPRESSIONFACTORY_H
 #define IEXPRESSIONFACTORY_H
 
+#include <QWidget>
 #include <QObject>
 
-class IExpressionFactory : public QObject
+class IExpressionFactory
 {
-    Q_OBJECT
 public:
-    explicit IExpressionFactory(QObject *parent = nullptr);
-
-private:
-public:
+    virtual ~IExpressionFactory() {};
+    virtual void setup(QWidget*) = 0;
     virtual void createWidgets() = 0;
 
-signals:
-
-public slots:
 };
 
 #endif // IEXPRESSIONFACTORY_H
